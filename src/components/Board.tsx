@@ -18,7 +18,7 @@ export const Board = () => {
   const [nonMineCount, setNonMineCount] = useState(0);
 
   useEffect(() => {
-    const config = { row: 3, col: 3, bombs: 3 };
+    const config = { row: 30, col: 30, bombs: 10 };
     const newBoard = createNewBoard(config.row, config.col, config.bombs);
     setNonMineCount(config.row * config.col - config.bombs);
     setMineLocations(newBoard.mineLocation);

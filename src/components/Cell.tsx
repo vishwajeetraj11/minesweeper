@@ -43,6 +43,12 @@ const Cell = ({ details, updateFlag, revealCell, gameOver }: Props) => {
               src="https://minesweeper.online/img/skins/hd/type0.svg?v=3"
             />
           )}
+          {gameOver === 1 && (
+            <img
+              style={{ width: "24px", height: "24px" }}
+              src="https://minesweeper.online/img/skins/hd/type0.svg?v=3"
+            />
+          )}
           {/* )} */}
 
           {clicked && details.value === "X" ? (
