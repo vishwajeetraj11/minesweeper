@@ -2,6 +2,7 @@ import { CellType } from "./Board";
 
 type Props = {
   details: CellType;
+  revealCell: (x: number, y: number) => void;
   updateFlag: (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
     x: number,
@@ -9,15 +10,20 @@ type Props = {
   ) => void;
 };
 
-const Cell = ({ details, updateFlag }: Props) => {
+const Cell = ({ details, updateFlag, revealCell }: Props) => {
   return (
     <div
-      onClick={() => console.log(details)}
+      onClick={() => revealCell(details.x, details.y)}
       onContextMenu={(e) => updateFlag(e, details.x, details.y)}
       className="flex items-center justify-center"
-      style={{ width: 40, height: 40, background: "grey" }}
+      style={{
+        width: 40,
+        height: 40,
+        background: "grey",
+        border: "2px solid green",
+      }}
     >
-      {details.value}
+      {details.revealed ? details.value : ""}
     </div>
   );
 };

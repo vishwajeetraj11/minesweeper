@@ -18,6 +18,7 @@ export const Board = () => {
     setGrid(newBoard.board);
   }, []);
 
+  // on right click - flag
   const updateFlag = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
     x: number,
@@ -26,7 +27,13 @@ export const Board = () => {
     e.preventDefault();
     const newGrid = JSON.parse(JSON.stringify(grid));
     newGrid[x][y].flagged = true;
-    console.log(newGrid);
+    setGrid(newGrid);
+  };
+
+  // on click - reveal
+  const revealCell = (x: number, y: number) => {
+    const newGrid = JSON.parse(JSON.stringify(grid));
+    newGrid[x][y].revealed = true;
     setGrid(newGrid);
   };
 
@@ -40,7 +47,7 @@ export const Board = () => {
                 // return <p key={index2}>{JSON.stringify(singleBlock)}</p>;
                 return (
                   <Cell
-                    // revealCell={revealCell}
+                    revealCell={revealCell}
                     details={singleBlock}
                     updateFlag={updateFlag}
                     key={index2}
