@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { createNewBoard } from "../utils/board";
 import Cell from "./Cell";
+import { revealed } from "../utils/reveal";
 
 export type CellType = {
   value: number;
@@ -12,9 +13,12 @@ export type CellType = {
 
 export const Board = () => {
   const [grid, setGrid] = useState<CellType[][]>([]);
+  const [mineLocations, setMineLocations] = useState<number[][]>([]);
+  const [gameOver, setGameOver] = useState(false);
 
   useEffect(() => {
-    const newBoard = createNewBoard(5, 5, 10);
+    const newBoard = createNewBoard(10, 10, 5);
+    setMineLocations(newBoard.mineLocation);
     setGrid(newBoard.board);
   }, []);
 
@@ -33,8 +37,20 @@ export const Board = () => {
   // on click - reveal
   const revealCell = (x: number, y: number) => {
     const newGrid = JSON.parse(JSON.stringify(grid));
-    newGrid[x][y].revealed = true;
-    setGrid(newGrid);
+    if (newGrid[x][y].value === "X") {
+      if (newGrid[x][y].value === "X") {
+        for (let i = 0; i < mineLocations.length; i++) {
+          newGrid[mineLocations[i][0]][mineLocations[i][1]].revealed = true;
+        }
+        setGrid(newGrid);
+        setGameOver(true);
+      }
+    } else {
+      // let newRevealedBoard = revealed(newGrid, x, y, nonMineCount);
+      const newRevealedBoard = revealed(newGrid, x, y);
+
+      setGrid(newRevealedBoard.arr);
+    }
   };
 
   return (
