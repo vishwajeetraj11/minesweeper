@@ -15,14 +15,15 @@ const Cell = ({ details, updateFlag, revealCell }: Props) => {
     <div
       onClick={() => revealCell(details.x, details.y)}
       onContextMenu={(e) => updateFlag(e, details.x, details.y)}
-      className="flex items-center justify-center"
+      className="flex items-center justify-center cursor-pointer"
       style={{
         width: 40,
         height: 40,
-        background: "grey",
+        background: "lightgrey",
         border: "2px solid green",
       }}
     >
+      {/* {details.revealed ? details.value : ""} */}
       {details.revealed ? details.value : ""}
     </div>
   );
