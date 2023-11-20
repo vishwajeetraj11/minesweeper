@@ -14,10 +14,13 @@ export type CellType = {
 export const Board = () => {
   const [grid, setGrid] = useState<CellType[][]>([]);
   const [mineLocations, setMineLocations] = useState<number[][]>([]);
-  const [gameOver, setGameOver] = useState(false);
+  const [gameOver, setGameOver] = useState<0 | 1 | 2>(2);
+  const [nonMineCount, setNonMineCount] = useState(0);
 
   useEffect(() => {
-    const newBoard = createNewBoard(10, 10, 5);
+    const config = { row: 3, col: 3, bombs: 3 };
+    const newBoard = createNewBoard(config.row, config.col, config.bombs);
+    setNonMineCount(config.row * config.col - config.bombs);
     setMineLocations(newBoard.mineLocation);
     setGrid(newBoard.board);
   }, []);
@@ -36,6 +39,7 @@ export const Board = () => {
 
   // on click - reveal
   const revealCell = (x: number, y: number) => {
+    if (grid[x][y].revealed || gameOver !== 2) return;
     const newGrid = JSON.parse(JSON.stringify(grid));
     if (newGrid[x][y].value === "X") {
       if (newGrid[x][y].value === "X") {
@@ -43,13 +47,16 @@ export const Board = () => {
           newGrid[mineLocations[i][0]][mineLocations[i][1]].revealed = true;
         }
         setGrid(newGrid);
-        setGameOver(true);
+        setGameOver(0);
       }
     } else {
       // let newRevealedBoard = revealed(newGrid, x, y, nonMineCount);
-      const newRevealedBoard = revealed(newGrid, x, y);
-
-      setGrid(newRevealedBoard.arr);
+      const newRevealedBoard = revealed(newGrid, x, y, nonMineCount);
+      setNonMineCount(newRevealedBoard?.newNonMinesCount);
+      setGrid(newRevealedBoard?.arr);
+      if (newRevealedBoard?.newNonMinesCount === 0) {
+        setGameOver(1);
+      }
     }
   };
 
@@ -67,12 +74,18 @@ export const Board = () => {
                     details={singleBlock}
                     updateFlag={updateFlag}
                     key={index2}
+                    gameOver={gameOver}
                   />
                 );
               })}
             </div>
           );
         })}
+        {gameOver !== 2 && (
+          <p className="text-white">
+            {gameOver === 1 ? "Won" : gameOver === 0 ? "Loose" : null}
+          </p>
+        )}
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ export const createNewBoard = (row: number, col: number, bombs: number) => {
   const mineLocation = [];
   // Create blank board
 
-  // x = column
+  // x = row
   for (let x = 0; x < row; x++) {
     const subCol = [];
     for (let y = 0; y < col; y++) {
@@ -19,7 +19,7 @@ export const createNewBoard = (row: number, col: number, bombs: number) => {
     }
     board.push(subCol);
   }
-
+  console.log(board)
   // Randomize Bomb Placement
   let bombsCount = 0;
   while (bombsCount < bombs) {
@@ -33,7 +33,7 @@ export const createNewBoard = (row: number, col: number, bombs: number) => {
     }
   }
 
-  // Add Numbers
+  // Adjacent Bombs
   for (let roww = 0; roww < row; roww++) {
     for (let coll = 0; coll < col; coll++) {
       if (board[roww][coll].value === "X") {
